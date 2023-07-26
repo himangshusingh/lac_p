@@ -1,0 +1,31 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="luc_p:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/luc_p_jar</output-path>
+    <root id="archive" name="luc_p.jar">
+      <element id="module-output" name="luc_p.main" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-expressions/9.7.0/297e1cfade4ef71466cc9d4f361d81807c8dc4c8/lucene-expressions-9.7.0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter-api/5.9.1/7bb53fbc0173e9f6a9d21d58297af94b1f2f9ce1/junit-jupiter-api-5.9.1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-codecs/9.7.0/ce18930d286e29c9f78f594c26cd5653ef3fe83e/lucene-codecs-9.7.0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-analyzers-common/8.11.2/7a74c5c2dd082b08c644a9016bc6ff66c8f27cc/lucene-analyzers-common-8.11.2.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-core/9.7.0/ad391210ffd806931334be9670a35af00c56f959/lucene-core-9.7.0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-demo/9.7.0/7ffeba88029c25398eafc010fa7ffb5ad8d67e45/lucene-demo-9.7.0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.antlr/antlr4-runtime/4.11.1/69214c1de1960040729702eb58deac8827135e7/antlr4-runtime-4.11.1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-queryparser/9.7.0/6e77bde908ff698354e4a2149e6dd4658b56d7b0/lucene-queryparser-9.7.0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-sandbox/9.7.0/9f3e8e1947f2f1c5784132444af51a060ff0b4bf/lucene-sandbox-9.7.0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.junit.platform/junit-platform-commons/1.9.1/3145f821b5cd10abcdc5f925baa5fffa6f1b628f/junit-platform-commons-1.9.1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.ow2.asm/asm-tree/7.2/3a23cc36edaf8fc5a89cb100182758ccb5991487/asm-tree-7.2.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.carrotsearch/hppc/0.9.1/4bf4c51e06aec600894d841c4c004566b20dd357/hppc-0.9.1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.ow2.asm/asm-analysis/7.2/b6e6abe057f23630113f4167c34bda7086691258/asm-analysis-7.2.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-facet/9.7.0/d524450d508074cf690a3f2566ed84e0c2980090/lucene-facet-9.7.0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-analysis-common/9.7.0/27ba6caaa4587a982cd451f7217b5a982bcfc44a/lucene-analysis-common-9.7.0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.junit.platform/junit-platform-engine/1.9.1/83591e5089d6cea5f324aa3ecca9b19d5a275803/junit-platform-engine-1.9.1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.apache.lucene/lucene-queries/9.7.0/126989d4622419aa06fcbf3a342e859cab8c8799/lucene-queries-9.7.0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter-params/5.9.1/ffcd1013edaeee112be11fcddeb38882d79238de/junit-jupiter-params-5.9.1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.ow2.asm/asm/7.2/fa637eb67eb7628c915d73762b681ae7ff0b9731/asm-7.2.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.ow2.asm/asm-commons/7.2/ca2954e8d92a05bacc28ff465b25c70e0f512497/asm-commons-7.2.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter/5.9.1/9274d3757e224bc02eae367bd481062a263c150b/junit-jupiter-5.9.1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.opentest4j/opentest4j/1.2.0/28c11eb91f9b6d8e200631d46e20a7f407f2a046/opentest4j-1.2.0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter-engine/5.9.1/1bf771097bde296c3ab174861954e8aafaaf2e94/junit-jupiter-engine-5.9.1.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>

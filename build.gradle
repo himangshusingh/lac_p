@@ -1,0 +1,39 @@
+plugins {
+    id 'java'
+    id "com.github.johnrengelman.shadow" version "8.1.1"
+}
+
+group = 'org.eggzampl'
+version = ''
+
+repositories {
+    mavenCentral()
+}
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'org.eggzampl.option'
+    }
+}
+
+shadowJar {
+    archiveBaseName.set('luc_p')
+    archiveClassifier.set('')
+    archiveVersion.set('')
+    mergeServiceFiles()
+}
+
+
+dependencies {
+    implementation 'org.jetbrains:annotations:24.0.0'
+    // https://mvnrepository.com/artifact/org.apache.lucene/lucene-core
+    implementation 'org.apache.lucene:lucene-core:9.7.0'
+    // https://mvnrepository.com/artifact/org.apache.lucene/lucene-queryparser
+    implementation 'org.apache.lucene:lucene-queryparser:9.7.0'
+    // https://mvnrepository.com/artifact/org.apache.lucene/lucene-demo
+    implementation 'org.apache.lucene:lucene-demo:9.7.0'
+    // https://mvnrepository.com/artifact/org.apache.lucene/lucene-analyzers-common
+    implementation 'org.apache.lucene:lucene-analyzers-common:8.11.2'
+    //picocli tool dependency
+    implementation 'info.picocli:picocli:4.7.4'
+}
