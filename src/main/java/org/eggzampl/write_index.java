@@ -96,7 +96,7 @@ public class write_index
                     }
                     catch (IOException ioe)
                     {
-                        ioe.printStackTrace();
+                        System.err.println(" ");
                     }
                     return FileVisitResult.CONTINUE;
                 }

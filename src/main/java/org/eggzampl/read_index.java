@@ -1,4 +1,5 @@
 package org.eggzampl;
+
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.DirectoryReader;
@@ -10,10 +11,15 @@ import org.apache.lucene.search.*;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 
+import java.nio.file.attribute.UserPrincipal;
 import java.io.IOException;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.attribute.FileOwnerAttributeView;
+import java.nio.file.attribute.BasicFileAttributes;
 
 public class read_index {
     static void Main(String searchTerm, String INDEX_DIR) throws IOException, ParseException {
@@ -29,7 +35,29 @@ public class read_index {
 
         // Process and display the matching documents
         for (Document doc : matchingDocuments) {
-            System.out.println("Document Path: " + doc.get("path"));  // + ", Content: "+ doc.get(fieldName));
+            System.out.println("\n\nDocument Path:      " + doc.get("path"));// + ", Content: "+ doc.get(fieldName));
+
+            Path file = Paths.get(doc.get("path"));
+
+            {
+                try {
+//  Access time snippet
+//                  Path file = Paths.get(fileName);
+                    BasicFileAttributes attr = Files.readAttributes(file, BasicFileAttributes.class);
+                    System.out.println("creationTime:       " + attr.creationTime());
+                    System.out.println("lastAccessTime:     " + attr.lastAccessTime());
+                    System.out.println("lastModifiedTime:   " + attr.lastModifiedTime());
+
+//  Owner Name Snippet
+                    FileOwnerAttributeView path = Files.getFileAttributeView(file, FileOwnerAttributeView.class);
+
+                    UserPrincipal user = path.getOwner();                           // Taking owner name from the file
+                    System.out.println("Owner:              " + user.getName());    // Printing the owner's name
+
+                } catch (IOException e) {
+                    System.out.println("Error while Displaying Time !");
+                }
+            }
         }
     }
 
@@ -60,7 +88,7 @@ public class read_index {
 
         // matchingdocument contains all the content of the matched file
 
-        System.out.println("Printing MATCHINGDOCUMENTS \n\n"+matchingDocuments+"\n\nPRINTED MATCHING DOCUMENTS");
+//        System.out.println("Printing MATCHINGDOCUMENTS \n\n"+matchingDocuments+"\n\nPRINTED MATCHING DOCUMENTS");
 
         // Close the index reader and directory
         indexReader.close();
