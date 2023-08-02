@@ -30,23 +30,21 @@ public class read_index {
         List<Document> matchingDocuments = performExactMatchQuery(INDEX_DIR, fieldName, searchTerm);
 
         System.out.println("Search Term: " + searchTerm);
-        System.out.println("Field Name: " + fieldName);
+//        System.out.println("Field Name: " + fieldName);
         System.out.println("Number of Hits: " + matchingDocuments.size());
 
         // Process and display the matching documents
         for (Document doc : matchingDocuments) {
             System.out.println("\n\nDocument Path:      " + doc.get("path"));// + ", Content: "+ doc.get(fieldName));
 
-            Path file = Paths.get(doc.get("path"));
-
             {
                 try {
 //  Access time snippet
-//                  Path file = Paths.get(fileName);
+                    Path file = Paths.get(doc.get("path"));
                     BasicFileAttributes attr = Files.readAttributes(file, BasicFileAttributes.class);
                     System.out.println("creationTime:       " + attr.creationTime());
-                    System.out.println("lastAccessTime:     " + attr.lastAccessTime());
-                    System.out.println("lastModifiedTime:   " + attr.lastModifiedTime());
+//                    System.out.println("lastAccessTime:     " + attr.lastAccessTime());
+//                    System.out.println("lastModifiedTime:   " + attr.lastModifiedTime());
 
 //  Owner Name Snippet
                     FileOwnerAttributeView path = Files.getFileAttributeView(file, FileOwnerAttributeView.class);
