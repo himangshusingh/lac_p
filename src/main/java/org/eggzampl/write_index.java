@@ -29,15 +29,18 @@ import static java.lang.System.exit;
 
 public class write_index
 {
-    public static String folderExistsInDirectory(String docsPath, String childFolder) {
-        File folder = new File(docsPath, childFolder);
+
+    private static final String INDEX_FOLDER = "indexedFiles";                 //name of the folder where the indexed files will be stored
+
+    public static String folderExistsInDirectory(String docsPath, String INDEX_FOLDER) {
+        File folder = new File(docsPath, INDEX_FOLDER);
         if(folder.exists() && folder.isDirectory())
             return folder.getAbsolutePath();
         return null;
     }
 
-    public static String createFolderInDirectory(String docsPath, String childFolder) {
-        File folder = new File(docsPath, childFolder);
+    public static String createFolderInDirectory(String docsPath, String INDEX_FOLDER) {
+        File folder = new File(docsPath, INDEX_FOLDER);
         if(folder.mkdir())
             return folder.getAbsolutePath();
         return null;
@@ -46,19 +49,17 @@ public class write_index
 
     static void Main(String docsPath)
     {
-        String childFolder = "indexedFiles";                 //name of the folder where the indexed files will be stored
-
         final Path docDir = Paths.get(docsPath);
 
         File parentDir = new File(docsPath);
-        File childDir = new File(parentDir, childFolder);
+        File childDir = new File(parentDir, INDEX_FOLDER);
 
-        String pathh = folderExistsInDirectory(docsPath, childFolder);
+        String pathh = folderExistsInDirectory(docsPath, INDEX_FOLDER);
         if (pathh != null) {
             System.out.println("The folder exists within the parent directory.");
             System.out.println("Path: " + pathh);
         } else {
-            String indexdir = createFolderInDirectory(docsPath, childFolder);
+            String indexdir = createFolderInDirectory(docsPath, INDEX_FOLDER);
             if (indexdir != null) {
                 System.out.println("The folder was successfully created in the parent directory.");
                 System.out.println("Path: " + indexdir);
@@ -66,6 +67,8 @@ public class write_index
                 System.out.println("Failed to create the folder in the parent directory.");
             }
         }
+        String indexFolderAbsolutePath = Paths.get(docsPath, INDEX_FOLDER).toAbsolutePath().toString();
+
 
         String indexPath = childDir.getPath();                      //getting the path of the indexed Folder
 
@@ -98,7 +101,7 @@ public class write_index
     static void indexDocs(final IndexWriter writer, Path path) throws IOException
     {
         //if directory exists then continue
-        if (Files.isDirectory(path))
+        if (Files.isDirectory(path) && !path.endsWith(INDEX_FOLDER))
         {
             //Iterate directory
             Files.walkFileTree(path, new SimpleFileVisitor<Path>()
@@ -119,15 +122,19 @@ public class write_index
                 }
             });
         }
-        else
-        {
-            //Index this file
+        else if (!Files.isDirectory(path)) {
+            // Index this file if it's not a directory
             indexDoc(writer, path, Files.getLastModifiedTime(path).toMillis());
         }
     }
 
     static void indexDoc(IndexWriter writer, Path file, long lastModified) throws IOException
     {
+        if (!Files.isRegularFile(file) || !Files.isReadable(file) || !file.toString().endsWith(".txt")) {
+            // Skip non-text files or files that cannot be read or not ending with ".txt"
+            return;
+        }
+
         try (InputStream stream = Files.newInputStream(file))
         {
             //Create lucene Document

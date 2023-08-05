@@ -35,5 +35,6 @@ dependencies {
     // https://mvnrepository.com/artifact/org.apache.lucene/lucene-analyzers-common
     implementation 'org.apache.lucene:lucene-analyzers-common:8.11.2'
     //picocli tool dependency
-    implementation 'info.picocli:picocli:4.7.4'
+//    implementation 'info.picocli:picocli:4.7.4'
+    implementation 'com.google.code.gson:gson:2.10.1'
 }
