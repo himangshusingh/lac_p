@@ -3,32 +3,29 @@ package org.eggzampl;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.queryparser.classic.QueryParser;
-import org.apache.lucene.search.*;
-
+import org.apache.lucene.search.IndexSearcher;
+import org.apache.lucene.search.Query;
+import org.apache.lucene.search.ScoreDoc;
+import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 
-import java.io.File;
+import java.io.*;
 import java.lang.reflect.Type;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.lang.reflect.Type;
-import java.nio.file.attribute.UserPrincipal;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.attribute.FileOwnerAttributeView;
 import java.nio.file.attribute.BasicFileAttributes;
+import java.nio.file.attribute.FileOwnerAttributeView;
+import java.nio.file.attribute.UserPrincipal;
+import java.util.ArrayList;
+import java.util.List;
 
 public class read_index {
 
@@ -42,7 +39,7 @@ public class read_index {
         // Field to search on
         String fieldName = "contents";
 
-        List<Document> matchingDocuments = performExactMatchQuery(INDEX_DIR, fieldName, searchTerm);
+        List<DocumentData> matchingDocuments = performExactMatchQuery(INDEX_DIR, fieldName, searchTerm);
 
         System.out.println("Search Term: " + searchTerm);
         System.out.println("Number of Hits: " + matchingDocuments.size());
@@ -50,14 +47,16 @@ public class read_index {
 
 
         // Specify the file path where you want to save the JSON output
-        String filePath = pfile.getParent();
-        deleteFile(getOutputFilePath(filePath));                                //this gets the parent directory of current specified directory
+        String filePath = pfile.getParent();                                    //this gets the parent directory of current specified directory
+        deleteFile(getOutputFilePath(filePath));                                //this deletes the existing data from the output JSON file
 
         List<UserData> existingData = readExistingData(getOutputFilePath(filePath));
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
         // Process and display the matching documents
-        for (Document doc : matchingDocuments) {
+        for (DocumentData docData : matchingDocuments) {
+            Document doc = docData.document;
+            String snippet = docData.snippet;
             System.out.println("\n\nDocument Path:      " + doc.get("path"));
             try {
                 //  Access time snippet
@@ -72,7 +71,7 @@ public class read_index {
                 UserPrincipal user = path.getOwner();                           // Taking owner name from the file
                 System.out.println("Owner:              " + user.getName());    // Printing the owner's name
 
-                UserData userData = new UserData(doc.get("path"),time,user.getName());
+                UserData userData = new UserData(doc.get("path"),time,user.getName(), snippet);
                 existingData.add(userData);
 
             } catch (IOException e) {
@@ -92,9 +91,10 @@ public class read_index {
 
             System.out.println("JSON output has been written to " + getOutputFilePath(filePath));
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println(e);
         }
 //-----------------------------------------------
+        //String searchWord = searchTerm; // Replace with the actual word you want to search
     }
 
     private static String getOutputFilePath(String inputFilePath) {
@@ -120,14 +120,13 @@ public class read_index {
         } catch (IOException e) {
             // If the file doesn't exist or cannot be read, ignore the exception and return an empty list
         }
-
         return existingData;
     }
 
 
 
-        private static List<Document> performExactMatchQuery(String INDEX_DIR, String fieldName, String searchTerm) throws IOException, ParseException {
-        List<Document> matchingDocuments = new ArrayList<>();
+    private static List<DocumentData> performExactMatchQuery(String INDEX_DIR, String fieldName, String searchTerm) throws IOException, ParseException {
+        List<DocumentData> matchingDocuments = new ArrayList<>();
 
         // Open the index directory
         Directory directory = FSDirectory.open(Paths.get(INDEX_DIR));
@@ -135,11 +134,12 @@ public class read_index {
 
         // Initialize the search
         IndexSearcher searcher = new IndexSearcher(indexReader);
+
         StandardAnalyzer analyzer = new StandardAnalyzer();
         QueryParser queryParser = new QueryParser(fieldName, analyzer);
 
         // Create an exact match query for the search term
-        Query query = queryParser.parse('"'+searchTerm+'"');
+        Query query = queryParser.parse('"' + searchTerm + '"');
 
         // Perform the search and retrieve matching documents
         int maxHits = 10; // Maximum Number of search results to retrieve
@@ -151,16 +151,9 @@ public class read_index {
             int docId = hit.doc;
             Document document = searcher.doc(docId);
             String documentPath = document.get("path");
-            Path documentRealPath;
-            try {
-                documentRealPath = Paths.get(documentPath).toRealPath();
-            } catch (IOException e) {
-                // If there's an error with the file path, continue to the next document
-                continue;
-            }
-            if (!documentRealPath.startsWith(indexDirPath)) {
-                matchingDocuments.add(document);
-            }
+            String snippet = getSnippetFromDocument(documentPath, searchTerm); // Get the snippet of the matching content
+            DocumentData documentData = new DocumentData(document, snippet);
+            matchingDocuments.add(documentData);
         }
 
         // Close the index reader and directory
@@ -170,14 +163,62 @@ public class read_index {
         return matchingDocuments;
     }
 
+    private static String getSnippetFromDocument(String documentPath, String searchTerm) {
+        try (BufferedReader br = new BufferedReader(new FileReader(documentPath))) {
+            String line;
+            StringBuilder snippetBuilder = new StringBuilder();
+            boolean isPreviousLine = false;
+
+            while ((line = br.readLine()) != null) {
+                if (line.toLowerCase().contains(searchTerm.toLowerCase())) {
+                    // Append the previous line (if available)
+                    if (isPreviousLine) {
+                        snippetBuilder.append(line).append('\n');
+                    }
+
+                    // Append the line containing the search term
+                    snippetBuilder.append(line).append('\n');
+
+                    // Append the next line (if available)
+                    if ((line = br.readLine()) != null) {
+                        snippetBuilder.append(line).append('\n');
+                    }
+
+                    // Mark that the previous line was added
+                    isPreviousLine = true;
+                } else {
+                    // Reset the marker for previous line when search term is not found
+                    isPreviousLine = false;
+                }
+            }
+
+            return snippetBuilder.toString();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "Error while extracting snippet from the document.";
+        }
+    }
+
     private static class UserData {
         String Path;
         String Creation_Time;
         String Owner;
-        public UserData(String Path, String Creation_Time, String Owner) {
+        String snippet;
+        public UserData(String Path, String Creation_Time, String Owner, String snippet) {
             this.Path = Path;
             this.Creation_Time = Creation_Time;
             this.Owner = Owner;
+            this.snippet = snippet;
+        }
+    }
+
+    private static class DocumentData {
+        Document document;
+        String snippet;
+
+        public DocumentData(Document document, String snippet) {
+            this.document = document;
+            this.snippet = snippet;
         }
     }
 }

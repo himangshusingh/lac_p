@@ -1,5 +1,8 @@
 package org.eggzampl;
 
+import org.apache.lucene.queryparser.classic.ParseException;
+
+import java.io.IOException;
 import java.util.Scanner;
 
 public class option {
@@ -22,8 +25,9 @@ public class option {
                 try {
                     System.out.println("Reading from existing Index");
 //                  read_index.Main("1");
+
                     read_index.Main(args[1], args[2]);
-                } catch (Exception e) {
+                } catch (IOException | ParseException e) {
                     System.err.println("Error Occurred, Files Not Indexed Properly");
                 }
             }
