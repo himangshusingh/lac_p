@@ -67,7 +67,7 @@ public class write_index
                 System.out.println("Failed to create the folder in the parent directory.");
             }
         }
-        String indexFolderAbsolutePath = Paths.get(docsPath, INDEX_FOLDER).toAbsolutePath().toString();
+//        String indexFolderAbsolutePath = Paths.get(docsPath, INDEX_FOLDER).toAbsolutePath().toString();
 
 
         String indexPath = childDir.getPath();                      //getting the path of the indexed Folder

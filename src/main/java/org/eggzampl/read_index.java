@@ -100,7 +100,7 @@ public class read_index {
     private static String getOutputFilePath(String inputFilePath) {
         File inputFile = new File(inputFilePath);
         String parentDir = inputFile.getParent();
-        return parentDir + File.separator + "Search_Result.json";
+        return parentDir + File.separator + "Search_Result.json";           //naming the output JSON file
     }
     private static void deleteFile(String filePath) {
         File file = new File(filePath);
