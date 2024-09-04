@@ -145,7 +145,7 @@ public class read_index {
         int maxHits = 10; // Maximum Number of search results to retrieve
         TopDocs topDocs = searcher.search(query, maxHits);
 
-        Path indexDirPath = Paths.get(INDEX_DIR).toRealPath(); // change
+        // Path indexDirPath = Paths.get(INDEX_DIR).toRealPath(); // change
         ScoreDoc[] hits = topDocs.scoreDocs;
         for (ScoreDoc hit : hits) {
             int docId = hit.doc;

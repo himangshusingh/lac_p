@@ -25,8 +25,6 @@ import org.apache.lucene.index.Term;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 
-import static java.lang.System.exit;
-
 public class write_index
 {
 
@@ -54,10 +52,10 @@ public class write_index
         File parentDir = new File(docsPath);
         File childDir = new File(parentDir, INDEX_FOLDER);
 
-        String pathh = folderExistsInDirectory(docsPath, INDEX_FOLDER);
-        if (pathh != null) {
+        String path = folderExistsInDirectory(docsPath, INDEX_FOLDER);
+        if (path != null) {
             System.out.println("The folder exists within the parent directory.");
-            System.out.println("Path: " + pathh);
+            System.out.println("Path: " + path);
         } else {
             String indexdir = createFolderInDirectory(docsPath, INDEX_FOLDER);
             if (indexdir != null) {
@@ -104,20 +102,14 @@ public class write_index
         if (Files.isDirectory(path) && !path.endsWith(INDEX_FOLDER))
         {
             //Iterate directory
-            Files.walkFileTree(path, new SimpleFileVisitor<Path>()
+            //Files.walkFileTree(path, new SimpleFileVisitor<Path>()
+            Files.walkFileTree(path, new SimpleFileVisitor<>()
             {
                 @Override
                 public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException
                 {
-                    try
-                    {
                         //Index this file
                         indexDoc(writer, file, attrs.lastModifiedTime().toMillis());    //converting the lastmodified time to millisecond
-                    }
-                    catch (IOException ioe)
-                    {
-                        System.err.println(" ");
-                    }
                     return FileVisitResult.CONTINUE;
                 }
             });
